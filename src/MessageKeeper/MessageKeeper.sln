@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageKeeper", "MessageKeeper\MessageKeeper.csproj", "{883A9A72-1A88-452A-993E-DDFEF2CF72CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageKeeper.SqlServerBackend", "MessageKeeper.SqlServerBackend\MessageKeeper.SqlServerBackend.csproj", "{A91C2398-0EFB-4865-BED7-B84ED32FC0BD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{883A9A72-1A88-452A-993E-DDFEF2CF72CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{883A9A72-1A88-452A-993E-DDFEF2CF72CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{883A9A72-1A88-452A-993E-DDFEF2CF72CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{883A9A72-1A88-452A-993E-DDFEF2CF72CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A91C2398-0EFB-4865-BED7-B84ED32FC0BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A91C2398-0EFB-4865-BED7-B84ED32FC0BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A91C2398-0EFB-4865-BED7-B84ED32FC0BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A91C2398-0EFB-4865-BED7-B84ED32FC0BD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
