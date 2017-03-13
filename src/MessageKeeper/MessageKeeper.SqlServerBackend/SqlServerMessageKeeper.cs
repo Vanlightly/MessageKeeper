@@ -18,30 +18,31 @@ namespace MessageKeeper.SqlServerBackend
             _connectionString = connectionString;
         }
 
-        public void Keep<T>(string label, T message)
+        public void Keep<T>(string keepName, T message)
         {
             var payload = JsonConvert.SerializeObject(message);
-            Insert(label, DateTimeOffset.Now, DateTimeOffset.Now, 1, payload);
+            Insert(keepName, DateTimeOffset.Now, DateTimeOffset.Now, 1, payload);
         }
 
-        public async Task KeepAsync<T>(string label, T message)
+        public async Task KeepAsync<T>(string keepName, T message)
         {
-            await Task.Run(() => Keep<T>(label, message));
+            await Task.Run(() => Keep<T>(keepName, message));
         }
 
-        public void Rekeep<T>(string label, IStoredMessage<T> message)
+        public void Rekeep<T>(string keepName, IStoredMessage<T> message)
         {
             message.StoreCount++;
+            message.LastStoreTime = DateTimeOffset.Now;
             var payload = JsonConvert.SerializeObject(message.Payload);
-            Insert(label, message.OriginalStoreTime, message.LastStoreTime, message.StoreCount, payload);
+            Insert(keepName, message.OriginalStoreTime, message.LastStoreTime, message.StoreCount, payload);
         }
 
-        public async Task RekeepAsync<T>(string label, IStoredMessage<T> message)
+        public async Task RekeepAsync<T>(string keepName, IStoredMessage<T> message)
         {
-            await Task.Run(() => Rekeep(label, message));
+            await Task.Run(() => Rekeep(keepName, message));
         }
 
-        public IStoredMessage<T> RetrieveMessage<T>(string label)
+        public IStoredMessage<T> RetrieveMessage<T>(string keepName)
         {
             using (var conn = new SqlConnection(_connectionString))
             {
@@ -51,7 +52,7 @@ namespace MessageKeeper.SqlServerBackend
     FROM {0} with (ROWLOCK, READPAST, UPDLOCK)
     ORDER BY MessageId)
 DELETE FROM CTE
-OUTPUT DELETED.*;", "Kept" + label + "s");
+OUTPUT DELETED.*;", keepName + "Keep");
 
                 using (var command = new SqlCommand(query, conn))
                 {
@@ -74,19 +75,19 @@ OUTPUT DELETED.*;", "Kept" + label + "s");
             }
         }
 
-        public async Task<IStoredMessage<T>> RetrieveMessageAsync<T>(string label)
+        public async Task<IStoredMessage<T>> RetrieveMessageAsync<T>(string keepName)
         {
-            return await Task.Run(() => RetrieveMessage<T>(label));
+            return await Task.Run(() => RetrieveMessage<T>(keepName));
         }
 
-        private void Insert(string label, DateTimeOffset originalStoreTime, DateTimeOffset lastStoreTime, short storeCount, string payload)
+        private void Insert(string keepName, DateTimeOffset originalStoreTime, DateTimeOffset lastStoreTime, short storeCount, string payload)
         {
             using (var conn = new SqlConnection(_connectionString))
             {
                 conn.Open();
 
-                string query = string.Format(@"INSERT INTO [dbo].[Kept{0}s]([OriginalStoreTime],[LastStoreTime],[StoreCount],[Payload])
-VALUES(@OriginalStoreTime,@LastStoreTime,@StoreCount,@Payload)", label);
+                string query = string.Format(@"INSERT INTO [dbo].[{0}Keep]([OriginalStoreTime],[LastStoreTime],[StoreCount],[Payload])
+VALUES(@OriginalStoreTime,@LastStoreTime,@StoreCount,@Payload)", keepName);
 
                 using (var command = new SqlCommand(query, conn))
                 {

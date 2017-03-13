@@ -8,11 +8,11 @@ namespace MessageKeeper
 {
     public interface IMessageKeeper
     {
-        void Keep<T>(string label, T message);
-        Task KeepAsync<T>(string label, T message);
-        void Rekeep<T>(string label, IStoredMessage<T> message);
-        Task RekeepAsync<T>(string label, IStoredMessage<T> message);
-        IStoredMessage<T> RetrieveMessage<T>(string label);
-        Task<IStoredMessage<T>> RetrieveMessageAsync<T>(string label);
+        void Keep<T>(string keepName, T message);
+        Task KeepAsync<T>(string keepName, T message);
+        void Rekeep<T>(string keepName, IStoredMessage<T> message);
+        Task RekeepAsync<T>(string keepName, IStoredMessage<T> message);
+        IStoredMessage<T> RetrieveMessage<T>(string keepName);
+        Task<IStoredMessage<T>> RetrieveMessageAsync<T>(string keepName);
     }
 }
